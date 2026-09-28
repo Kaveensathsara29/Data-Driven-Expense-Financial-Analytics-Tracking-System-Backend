@@ -1,0 +1,194 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthPayload {
+  accessToken: String!
+  user: UserType!
+}
+
+type BudgetType {
+  category: String!
+  currentSpent: Float!
+  id: ID!
+  monthlyLimit: Float!
+  percentage: Float!
+  remaining: Float!
+  status: String!
+}
+
+type CategorySpendBreakdown {
+  category: String!
+  count: Int!
+  percentage: Float!
+  totalAmount: Float!
+}
+
+type CategoryType {
+  color: String!
+  icon: String!
+  id: ID!
+  isDefault: Boolean!
+  name: String!
+  type: String!
+}
+
+input CreateCategoryInput {
+  color: String! = "#E11D48"
+  icon: String! = "tag"
+  name: String!
+  type: String!
+}
+
+input CreateRecurringInput {
+  amount: Float!
+  category: String!
+  frequency: String! = "MONTHLY"
+  nextDueDate: DateTime!
+  paymentMethod: String! = "Credit Card"
+  title: String!
+  type: String! = "EXPENSE"
+}
+
+input CreateTransactionInput {
+  amount: Float!
+  category: String!
+  date: DateTime!
+  isRecurring: Boolean! = false
+  notes: String! = ""
+  paymentMethod: String! = "Credit Card"
+  tags: [String!]! = []
+  title: String!
+  type: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type MonthlyTrend {
+  expense: Float!
+  income: Float!
+  month: String!
+  netSavings: Float!
+}
+
+type Mutation {
+  createCategory(input: CreateCategoryInput!): CategoryType!
+  createRecurringTransaction(input: CreateRecurringInput!): RecurringType!
+  createTransaction(input: CreateTransactionInput!): TransactionType!
+  deleteBudget(id: String!): Boolean!
+  deleteRecurringTransaction(id: String!): Boolean!
+  deleteTransaction(id: String!): Boolean!
+  login(input: LoginInput!): AuthPayload!
+  register(input: RegisterInput!): AuthPayload!
+  setBudget(input: SetBudgetInput!): BudgetType!
+  toggleRecurringStatus(id: String!): RecurringType!
+  updateTransaction(input: UpdateTransactionInput!): TransactionType!
+}
+
+type PaginatedTransactions {
+  currentPage: Int!
+  items: [TransactionType!]!
+  totalCount: Int!
+  totalPages: Int!
+}
+
+input PaginationInput {
+  limit: Int! = 15
+  page: Int! = 1
+}
+
+type Query {
+  budgets: [BudgetType!]!
+  categories: [CategoryType!]!
+  me: UserType!
+  recurringTransactions: [RecurringType!]!
+  transactionStats: TransactionStats!
+  transactions(filter: TransactionFilterInput, pagination: PaginationInput): PaginatedTransactions!
+}
+
+type RecurringType {
+  amount: Float!
+  category: String!
+  frequency: String!
+  id: ID!
+  nextDueDate: DateTime!
+  paymentMethod: String!
+  status: String!
+  title: String!
+  type: String!
+}
+
+input RegisterInput {
+  currency: String! = "USD"
+  email: String!
+  name: String!
+  password: String!
+}
+
+input SetBudgetInput {
+  category: String!
+  monthlyLimit: Float!
+}
+
+input TransactionFilterInput {
+  category: String
+  endDate: DateTime
+  paymentMethod: String
+  search: String
+  startDate: DateTime
+  type: String
+}
+
+type TransactionStats {
+  categoryBreakdown: [CategorySpendBreakdown!]!
+  monthlyBurnRate: Float!
+  monthlyTrends: [MonthlyTrend!]!
+  netBalance: Float!
+  savingsRate: Float!
+  totalExpense: Float!
+  totalIncome: Float!
+}
+
+type TransactionType {
+  amount: Float!
+  category: String!
+  createdAt: DateTime!
+  date: DateTime!
+  id: ID!
+  isRecurring: Boolean!
+  notes: String
+  paymentMethod: String!
+  tags: [String!]!
+  title: String!
+  type: String!
+}
+
+input UpdateTransactionInput {
+  amount: Float
+  category: String
+  date: DateTime
+  id: ID!
+  notes: String
+  paymentMethod: String
+  tags: [String!]
+  title: String
+  type: String
+}
+
+type UserType {
+  avatarUrl: String
+  createdAt: DateTime!
+  currency: String!
+  email: String!
+  id: ID!
+  name: String!
+  role: String!
+}
